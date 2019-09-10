@@ -39,10 +39,10 @@ end
 % Nel caso non sia necessario sarebbe bello evitare di calcolare il termine
 % noto devouto al forzante. In particolare se il forzante è nullo non serve
 % effettuale l'integrazione. 
-% rand_points=probdata.Omega(1)+(probdata.Omega(2)-probdata.Omega(1))*rand(1,100);
-% if nnz(probdata.f(rand_points))==0
-%     return
-% end
+rand_points=probdata.Omega(1)+(probdata.Omega(2)-probdata.Omega(1))*rand(1,100);
+if nnz(probdata.f(rand_points))==0 
+    return
+end
 
 for jdx=1:n-2
     fint=@(t) probdata.f(t).*space.Bspline_eval(jdx+1,t);
