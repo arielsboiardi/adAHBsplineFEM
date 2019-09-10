@@ -24,11 +24,11 @@ A=hspace.A;
 idx=1;
 for lr=1:L
     for jlr=find(A{lr})
-        if (jlr~=1) && (jlr~=hspace.dim)
+        if (jlr~=1) && (jlr~=hspace.sp_lev{lr}.dim)
             jdx=1;
             for lc=1:L
                 for ilc=find(A{lc})
-                    if (ilc~=1) && (ilc~=hspace.dim)
+                    if (ilc~=1) && (ilc~=hspace.sp_lev{lc}.dim)
                         M(jdx,idx)=hspace.a_bilin(lr,jlr,lc,ilc,probdata);
                         jdx=jdx+1;
                     end

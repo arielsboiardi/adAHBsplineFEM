@@ -58,7 +58,7 @@ probdata=problem_data_set(Omega, b, m, u0, u1, f, uex);
 %% Costruzione dello spazio di prima approssimazione 
 deg=1;
 
-dofs=80;
+dofs=30;
 
 dim=dofs+2; % dimensione dello spazio di approssimazione 
 Xi=linspace(probdata.Omega(1), probdata.Omega(2), dim-deg+1); % nodi uniformi
@@ -71,9 +71,6 @@ hspace=HBspline_space(space);
 %% Assemblaggio e carico in spazio gerarchico ad un livello 
 Ah=HBspline_Assembly(hspace,probdata);
 Fh=HBspline_load(hspace,probdata);
-uh=Ah\Fh;
-plot(uh)
-title('Gerarchico')
 
 % Confronto con la soluzione notoriamente giusta
 A=Bspline_Assembly(space, probdata);
@@ -81,4 +78,13 @@ F=Bspline_load(space, probdata);
 uh=A\F;
 figure
 plot(uh)
-title('NON Gerarchico')
+title('Controllo non gerarchico')
+
+%% Aggiunta livello 
+hspace=hspace.refine([3,4,5]);
+Ah=HBspline_Assembly(hspace,probdata);
+Fh=HBspline_load(hspace,probdata);
+uh=Ah\Fh;
+figure
+plot(uh)
+title('Gerarchico')

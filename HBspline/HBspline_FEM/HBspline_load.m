@@ -24,20 +24,18 @@ F=zeros(hspace.dim-2,1);    % inizializzazione del vettore di carico
 %% Parte dovuta ai dati di bordo
 bd_values=[probdata.u0, probdata.uL];   % straggo i valori al bordo
 if nnz(bd_values)>0
-    disp('ci sono dati di bordo')
     ext1=1; ext2=p+2;    % servono per tenere conto del dato di bordo in esame fra i due giri del ciclo
     % Procedo alle stesse operazioni per entrambi i dati di bordo
     for bdv=bd_values
         if bdv~=0
-            disp(strcat('Il dato a bordo vale ',num2str(bdv)))
             % In base a quele valore di bordo sto usando devo fare una
             % diversa selezione nella funzione terminale dello spazio. Si
             % veda i dettagli in HBspline_space\get_bd_function
             if find(bd_values==bdv)==1
-                dir=1
+                dir=1;
                 selection=1;
             else
-                dir=-1
+                dir=-1;
                 selection='last';
             end
             [bdlev, bdind]=hspace.get_bd_function(selection); % coordinate della funzioen terminale relativa al dato al bordo nello spazio gerarchico
@@ -56,7 +54,7 @@ if nnz(bd_values)>0
                 spacel=hspace.sp_lev{l};    % spazio a livello attuale
                 act_knots_ind=spacel.get_knots(hspace.A{l});
                 act_knots=spacel.knots(act_knots_ind);
-                if act_knots(ext1)<bd_fun_knots(ext2)
+                if ~isempty(act_knots) && act_knots(ext1)<bd_fun_knots(ext2)
                     % Se ci sono funzioni attive a livello L con supporto a
                     % intersezione non vuota con quello della funzione di
                     % bordo, scorro tutte le funzioni del livello attivo
@@ -80,7 +78,6 @@ if nnz(bd_values)>0
                         % proprietà, 
                         if adx_knots(ext1)<bd_fun_knots(ext2)
                             % se i supporto si intersecano integro
-%                             F(rdx)=F(rdx)+hspace.a_bilin(1,adx,bdlev,bdind, probdata);
                             F(rdx)=F(rdx)-bdv*hspace.a_bilin(bdlev,bdind,1,adx, probdata);
                             rdx=rdx+dir;
                         else
