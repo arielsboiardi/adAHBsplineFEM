@@ -24,7 +24,6 @@ F=zeros(hspace.dim-2,1);    % inizializzazione del vettore di carico
 %% Parte dovuta ai dati di bordo
 bd_values=[probdata.u0, probdata.uL];   % straggo i valori al bordo
 if nnz(bd_values)>0
-    ext1=1; ext2=p+2;    % servono per tenere conto del dato di bordo in esame fra i due giri del ciclo
     % Procedo alle stesse operazioni per entrambi i dati di bordo
     for bdv=bd_values
         if bdv~=0
@@ -34,6 +33,7 @@ if nnz(bd_values)>0
             if find(bd_values==bdv)==1
                 dir=1;
                 selection=1;
+                ext1=1; ext2=p+2;    % servono per tenere conto del dato di bordo in esame fra i due giri del ciclo
             else
                 dir=-1;
                 selection='last';
@@ -54,37 +54,51 @@ if nnz(bd_values)>0
                 spacel=hspace.sp_lev{l};    % spazio a livello attuale
                 act_knots_ind=spacel.get_knots(hspace.A{l});
                 act_knots=spacel.knots(act_knots_ind);
-                if ~isempty(act_knots) && act_knots(ext1)<bd_fun_knots(ext2)
-                    % Se ci sono funzioni attive a livello L con supporto a
-                    % intersezione non vuota con quello della funzione di
-                    % bordo, scorro tutte le funzioni del livello attivo
-                    active_ind_l=setdiff(find(hspace.A{l}),[1,spacel.dim]);
+                
+                if ~isempty(act_knots)
                     if dir==-1
-                        % Se sono al dato di bordo finale, conviene
-                        % iniziare la ricerca dall'ultima funzione del
-                        % livello attuale
-                        active_ind_l=flip(active_ind_l);
-                        rdx=hspace.dim-2;
+                        ext1=numel(act_knots);
+                        ext2=1;
                     end
-                    for adx=active_ind_l
-                        adx_knots_ind=spacel.get_knots(adx);
-                        adx_knots=spacel.knots(adx_knots_ind);
-                        % Se il supporto della funzione selezionata ha
-                        % intersezione non vuota con quello della funzioen
-                        % di bordo procedo. 
-                        % Poiché per come ho effettuato la ricerca, se una
-                        % funzione ha supporto e intersezione nulla con il
-                        % bordo, anche tutte le successiva hanno la stessa
-                        % proprietà, 
-                        if adx_knots(ext1)<bd_fun_knots(ext2)
-                            % se i supporto si intersecano integro
-                            F(rdx)=F(rdx)-bdv*hspace.a_bilin(bdlev,bdind,1,adx, probdata);
-                            rdx=rdx+dir;
-                        else
-                            % in caso contrario posso direttamente
-                            % smetterre di controllare tutte le funzioni
-                            % del livello presente.
-                            break
+                    
+                    if dir*act_knots(ext1)<dir*bd_fun_knots(ext2)
+                        % Se ci sono funzioni attive a livello L con supporto a
+                        % intersezione non vuota con quello della funzione di
+                        % bordo, scorro tutte le funzioni del livello
+                        % attivo, escluse la prima e l'ultima. 
+                        active_ind_l=setdiff(find(hspace.A{l}),[1,spacel.dim]);
+                        
+                        ext1=1; ext2=p+2;
+                        if dir==-1
+                            % Se sono al dato di bordo finale, conviene
+                            % iniziare la ricerca dall'ultima funzione del
+                            % livello attuale e riempio il vettore dal
+                            % fondo.
+                            active_ind_l=flip(active_ind_l);
+                            rdx=hspace.dim-2;
+                            ext1=p+2; ext2=1;
+                        end
+                        
+                        for adx=active_ind_l
+                            adx_knots_ind=spacel.get_knots(adx);
+                            adx_knots=spacel.knots(adx_knots_ind);
+                            % Se il supporto della funzione selezionata ha
+                            % intersezione non vuota con quello della funzioen
+                            % di bordo procedo.
+                            % Poiché per come ho effettuato la ricerca, se una
+                            % funzione ha supporto e intersezione nulla con il
+                            % bordo, anche tutte le successiva hanno la stessa
+                            % proprietà,
+                            if dir*adx_knots(ext1)<dir*bd_fun_knots(ext2)
+                                % se i supporto si intersecano integro
+                                F(rdx)=F(rdx)-bdv*hspace.a_bilin(bdlev,bdind,l,adx, probdata);
+                                rdx=rdx+dir;
+                            else
+                                % in caso contrario posso direttamente
+                                % smetterre di controllare tutte le funzioni
+                                % del livello presente.
+                                break
+                            end
                         end
                     end
                 end

@@ -1,5 +1,5 @@
 # adAHBsplineFEM
 
-![Hierarhcichal basis](HBbase.png)
+![Hierarhcichal basis](figures\base.png)
 
-![Animazione](animazione.gif)
+![Animazione](figures\ad_evolution.gif)
