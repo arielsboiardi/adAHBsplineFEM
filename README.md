@@ -1,5 +1,5 @@
 # adAHBsplineFEM
 
-![](figures\base.png)
+![](figures/base.png)
 
-![](figures\ad_evolution.gif)
+![](figures/ad_evolution.gif)
