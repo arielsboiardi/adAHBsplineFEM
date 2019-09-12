@@ -12,7 +12,7 @@ function a=a_bilin(hspace, Li, idx, Lj, jdx, probdata)
 %   Li:         indice del livello della prima funzione 
 %   idx:        indice della prima funzioen nel livello Li
 %   Lj:         indice del livello del secondo operando
-%   jdx:        idnice del secondo operando nel livello Lj
+%   jdx:        indice del secondo operando nel livello Lj
 %   probdata:   problem_data_set con le informazioni del problema
 %
 % OUTPUTS:
@@ -46,19 +46,6 @@ x2=min(Xi(end),Xj(end));
 % Costruisco l'integranda della forma bilineare
 F = @(t)    m*spacei.dBspline_eval(idx,t) .* spacej.dBspline_eval(jdx,t) + ...
             b*spacei.dBspline_eval(idx,t) .* spacej.Bspline_eval(jdx,t);
-
-        
-        %%%%%%%% ASSOLUTAMENTE MIGLIORARE QUESTO ASPETTO %%%%%%%%
-        
-% xi1=max(Xi1(idx), Xi2(jdx));  %%%%%% NON SO SE SIA CORRETTO
-% xi2=min(Xi1(idx+p+1), Xi2(jdx+p+1));
-% 
-% xi1=Xi1(idx);
-% xi2=Xi1(idx+p+1);
-% % 
-% 
-% xi1=0;
-% xi2=1;
 
 a=integral(F,x1,x2);
 
