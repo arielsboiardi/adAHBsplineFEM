@@ -11,6 +11,16 @@ u1=1;
 f=@(t) 0.*t;
 uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 
+% Problema trsposrto-diffusione al contrario
+Omega=[0,1];
+b=-100;
+m=1;
+u0=1;
+u1=0;
+f=@(t) 0.*t;
+uex=@(x) (exp((b/m)*(1-x))-1)/(exp(b/m)-1);
+
+% 
 % % Problema funzione di Runge
 % Omega=[0,1];
 % 
@@ -31,7 +41,7 @@ uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 % u1=0;
 
 % % Problema con soluzione oscillante
-% Omega=[0,1];
+% Omega=[-pi/2,pi/2];
 % 
 % m=1;
 % b=1;
@@ -48,17 +58,17 @@ uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 % 
 % f=@(t) -m*dduex(t)+b*duex(t);
 % 
-% u0=1;
-% u1=-1;
+% u0=0;
+% u1=0;
 
 
 % Costruzione del problema 
 probdata=problem_data_set(Omega, b, m, u0, u1, f, uex);
 
 %% Costruzione dello spazio di prima approssimazione 
-deg=2;
+deg=3;
 
-dofs=5;
+dofs=10;
 
 dim=dofs+2; % dimensione dello spazio di approssimazione 
 Xi=linspace(probdata.Omega(1), probdata.Omega(2), dim-deg+1); % nodi uniformi
@@ -82,17 +92,20 @@ ufn=@(t) space.Bspline_appr(u,t);
 
 %grafico
 figure
-t=0:0.001:1;
+t=probdata.Omega(1):0.001:probdata.Omega(2);
 plot(t,ufn(t))
-% title('Controllo non gerarchico')
-ylim([-0.3,1])
-
-indice=1;
-print('-dpng','-r90',strcat(num2str(indice),'.png'))
-indice=indice+1;
+title('Controllo non gerarchico')
+% ylim([-1,1])
+% 
+% indice=1;
+% print('-dpng','-r90',strcat(num2str(indice),'.png'))
+% indice=indice+1;
 
 %% Aggiunta livello 
-hspace=hspace.refine(hspace.sp_lev{hspace.nlev}.dim-3:hspace.sp_lev{hspace.nlev}.dim);
+% hspace=HBspline_space(space);
+% hspace=hspace.refine(hspace.sp_lev{hspace.nlev}.dim-3);
+hspace=hspace.refine(4);
+
 Ah=HBspline_Assembly(hspace,probdata);
 Fh=HBspline_load(hspace,probdata);
 uh=Ah\Fh;
@@ -103,8 +116,8 @@ uhfn=@(t) hspace.HBspline_appr(uh,t);
 % grafico 
 figure
 plot(t,uhfn(t))
-ylim([-0.1,1])
-
-%Salva
-print('-dpng','-r90',strcat(num2str(indice),'.png'))
-indice=indice+1;
+% ylim([-1,1])
+% 
+% %Salva
+% print('-dpng','-r90',strcat(num2str(indice),'.png'))
+% indice=indice+1;
