@@ -1,4 +1,4 @@
-function [L, fn_ind]=get_bd_function(hspace, index)
+function [fn_L, fn_ind]=get_bd_function(hspace, index)
 % get_bd_function trova il livello L e l'indice fn_ind delle funzioni di
 % bordo nello spazio gerarchico.
 %
@@ -25,11 +25,11 @@ if strcmp(index,'last')
     last=true;
 end
 
-for L=1:hspace.nlev     % scorro su tutti i livelli
+for fn_L=1:hspace.nlev     % scorro su tutti i livelli
     if last
-        fn_ind=hspace.sp_lev{L}.dim;
+        fn_ind=hspace.sp_lev{fn_L}.dim;
     end
-    if hspace.A{L}(fn_ind)   % è attiva la prima funzione del livello L
+    if hspace.A{fn_L}(fn_ind)   % è attiva la prima funzione del livello L
          return
     end
 end
