@@ -1,3 +1,27 @@
+function F=load_prova(hspace, probdata)
+% HBspline_load costruisce il vettore di carico per la discretizzazione del
+% problema debole descritto da probdata nello spazio gerarchico hspace.
+%
+%   F=HBspline_load(hspace, probdata)
+%
+% INPUTS:
+%
+%   hsapce:     HBspline_space che descrive lo spazio gerarchico in cui il
+%               problema viene discretizzato
+%   probdata:   problem_data_set che desctrive il problema (vedere la
+%               rispettiva classe)
+%
+% OUTPUTS:
+%
+%   F:          vettore di carico per il sistema lineare ottenuto dalla
+%               discretizzazione del problema probdata nello spazio
+%               gerarchico dato
+
+L=hspace.nlev;   % massima profondità dello spazio gerarchico
+p=hspace.deg;   % grado dello spazio
+F=zeros(hspace.dim-2,1);    % inizializzazione del vettore di carico
+
+%   ========== PARTE dovuta ai DATI AL BORDO ==========
 bd_values=[probdata.u0, probdata.uL];   % estraggo i valori al bordo
 if nnz(bd_values)>0
     % ===== PROCEDO sui due valori di bordo alle medesime operazioni =====
@@ -61,13 +85,18 @@ if nnz(bd_values)>0
                         ext2=1;
                     end
                     
+                    % Se ci sono funzioni attive a livello l con supporto a
+                    % intersezione non vuota con quello della funzione di
+                    % bordo, scorro tutte le funzioni attive del livello
+                    % attuale l, ESCLUSE la prima e l'ultima nel caso
+                    % siano attive.
+                    active_ind_l=setdiff(find(Al),[1,spacel.dim]);
+                    
+                    if dir==-1
+                        rdx=rdx+numel(active_ind_l);
+                    end
+                    
                     if dir*act_knots(ext1)<dir*bd_fun_knots(ext2)
-                        % Se ci sono funzioni attive a livello l con supporto a
-                        % intersezione non vuota con quello della funzione di
-                        % bordo, scorro tutte le funzioni attive del livello
-                        % attuale l, ESCLUSE la prima e l'ultima nel caso
-                        % siano attive.
-                        active_ind_l=setdiff(find(Al),[1,spacel.dim]);
                         
                         % ext1=1; ext2=p+2; %==== ELIMINARE ?????
                         if dir==-1
@@ -102,11 +131,19 @@ if nnz(bd_values)>0
                                 % active_ind_l, in quanto ogni funzione
                                 % successiva avrà supporto traslato di una
                                 % cella. Passo quindi al prossimo livello.
+                                % Devo però scorrere in avanti per tutti
+                                % gli indici che ho saltato.
                                 sft=nnz(active_ind_l>=adx);
-                                rdx=rdx+sft;
+                                rdx=rdx+dir*sft;
                                 break
                             end
                         end
+                    elseif dir==1
+                        % Se salto un livello per evitare qualche
+                        % integrazione, devo comunque scorrere in avanti
+                        % sul vettore di carico in corrispondenza di tuttte
+                        % le funzioni il cui integrale è nullo. 
+                        rdx=rdx+dir*numel(active_ind_l);
                     end
                 end
             end
@@ -121,7 +158,29 @@ if nnz(bd_values)>0
         % segno per aggiustare le disuguagliazne che nel caso dell'ultimo
         % dato al bordo devono essere ribaltate.
         selection='last';
-        rdx=hspace.dim-2;
+        rdx=0;
         dir=-1;
     end
+end
+
+
+%   ========== Parte dovuta al termine noto ==========
+% Faccio un controllo: se il termine noto/forzante è con alta probabilità
+% nullo (a occhio) evito di eseguire l'integrazione, altrimenti proseguo.
+rand_points=probdata.Omega(1)+(probdata.Omega(2)-probdata.Omega(1))*rand(1,100);
+if nnz(probdata.f(rand_points))~=0
+    rdx=1;
+    for l=1:L
+        spacel=hspace.sp_lev{l};
+        for adx=setdiff(find(hspace.A{l}),[1,spacel.dim])
+            adx_knots_ind=spacel.get_knots(adx);   % trovo i nodi su cui poggia la funzione attiva attuale
+            adx_knots=spacel.knots(adx_knots_ind);
+            x1=adx_knots(1); x2=adx_knots(p+2);   % integro solo sul supporto della funzione attive
+            fnint=@(t) probdata.f(t).*hspace.sp_lev{l}.Bspline_eval(adx,t);
+            F(rdx)=F(rdx)+integral(fnint,x1,x2);
+            rdx=rdx+1;
+        end
+    end
+end
+
 end
