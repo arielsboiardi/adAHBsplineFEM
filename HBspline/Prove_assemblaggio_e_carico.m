@@ -13,7 +13,7 @@ uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 
 % % Problema trsposrto-diffusione al contrario
 % Omega=[0,1];
-% b=-500;
+% b=-100;
 % m=1;
 % u0=1;
 % u1=0;
@@ -41,13 +41,13 @@ uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 % u1=0;
 
 % % Problema con soluzione oscillante
-% Omega=[pi-0.1,pi];
+% Omega=[0,pi];
 % 
 % m=1;
 % b=1;
 % 
-% alpha=101;
-% k=15;
+% alpha=51;
+% k=3;
 % syms z;
 % uex=(cos(k*z)).^alpha;
 % duex=diff(uex,z);
@@ -58,8 +58,10 @@ uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 % 
 % f=@(t) -m*dduex(t)+b*duex(t);
 % 
-% u0=0;
+% u0=1;
 % u1=-1;
+
+
 
 
 % Costruzione del problema 
@@ -68,7 +70,7 @@ probdata=problem_data_set(Omega, b, m, u0, u1, f, uex);
 %% Costruzione dello spazio di prima approssimazione 
 deg=3;
 
-dofs=800;
+dofs=10;
 
 dim=dofs+2; % dimensione dello spazio di approssimazione 
 Xi=linspace(probdata.Omega(1), probdata.Omega(2), dim-deg+1); % nodi uniformi
@@ -110,12 +112,14 @@ ylim([0,1])
 
 %% Aggiunta livello 
 % hspace=HBspline_space(space);
-% hspace=hspace.refine(hspace.sp_lev{hspace.nlev}.dim-3);
-hspace=hspace.refine(4);
+% hspace=hspace.refine([hspace.sp_lev{hspace.nlev}.dim-3]);
+% hspace=hspace.refine([4]);
+hspace=hspace.refine([12:18]);
+
 
 Ah=HBspline_Assembly(hspace,probdata);
 % Fh=HBspline_load(hspace,probdata);
-Fh=load_prova(hspace,probdata);
+Fh=HBspline_load_opt(hspace,probdata);
 uh=Ah\Fh;
 uh=[probdata.u0; uh; probdata.uL];
 
