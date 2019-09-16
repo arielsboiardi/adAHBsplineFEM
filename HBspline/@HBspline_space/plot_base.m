@@ -38,6 +38,7 @@ for L=1:hspace.nlev
     end
     if isempty(P{L})
         P{L}=plot(1,1,'LineStyle','none');
+        P{L+1}=[];
     end
 end
 
