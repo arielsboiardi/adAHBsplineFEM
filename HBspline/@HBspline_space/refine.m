@@ -19,7 +19,6 @@ function hspace_ref=refine(hspace, marked_fun)
 %
 
 L=hspace.nlev;  % livello attuale
-
 if ~islogical(marked_fun)
     marked_fun=ismember(1:hspace.sp_lev{L}.dim,marked_fun);
     % Sulla scelta di mantenere indici logici vedere la descrizione della
@@ -52,10 +51,15 @@ C=hspace.get_children(marked_fun);
 % figlie di quelle disattivate al livello precedente in questa operazione.
 % ATTENZIONE: Non sono le figlie di TUTTE le funzioni non attive al ivello
 % precedente!
-hspace_ref.A{L}=ismember(1:space1.dim,C);  
+A_l_log=ismember(1:space1.dim,C);
+hspace_ref.A{L}=A_l_log;  
 % Converto però C in vettore logico come previsto dalla definizione della 
 % classe HBspline_space.
 hspace_ref.D{L}=~hspace_ref.A{L};   % le altre sono non attive
 
 hspace_ref.dim=hspace.dim-nnz(marked_fun)+nnz(hspace_ref.A{L});
+
+% Costruisco la griglia gerarchica
+hspace_ref.knots=union(hspace_ref.knots, space1.knots(space1.get_knots(A_l_log)));
+
 end
