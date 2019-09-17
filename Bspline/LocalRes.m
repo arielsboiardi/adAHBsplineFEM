@@ -16,15 +16,13 @@ function etaR=LocalRes(uh, problem_data, space)
 b=problem_data.b;   % Leggo i dati
 m=problem_data.m;
 f=problem_data.f;
-
 u0=problem_data.u0;
 uL=problem_data.uL;
-
 Xi=space.knots;
 H=diff(Xi); % calcolo le ampiezz degli intervalli delimitati dai nodi
 N=numel(H);
 
-etaR=zeros(1,N);
+etaR=zeros(1,N); % inizializzo 
 
 % Costruisco la funzione da integrare una volta per tutte, poi verrà
 % integrata sugli internodi come da trattazione teorica.
