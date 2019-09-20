@@ -87,8 +87,8 @@ classdef HBspline_space
                 hspace.sp_lev{1}=space; 
                 
                 % Tutti i nodi e tutte le celle sono attivi
-                hspace.hknots=true(size(space.knots));
-                hspace.hcells=true(1,numel(space.knots)-1);
+                hspace.hknots{1}=true(size(space.knots));
+                hspace.hcells{1}=true(1,numel(space.knots)-1);
                 
                 % Tutte le B-spline sono attive al primo livello
                 hspace.A{1}=[true(1,space.dim)]; 
