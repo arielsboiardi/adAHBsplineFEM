@@ -1,23 +1,23 @@
-function etaR=LocalRes(uh, problem_data, space)
+function etaR=LocalRes(uh, probdata, space)
 % LocalRes : Calcola il residuo locale dell'approssimazione della soluzione
-% del problema problem_data nello spazio space
+% del problema probdata nello spazio space
 %
 % INPUTS:
 %
 %   uh: coefficienti della soluzione approssimata del problema
-%   problem_data: dati del problema (si veda la classe dedicata)
-%   space: spazio di approssimazione (si veda la classe dedicata)
+%   probdata: dati del problema (si veda la classe problem_data_set)
+%   space: spazio di approssimazione (si veda la classe Bspline_space)
 %
 % OUTPUTS:
 %
 %   etaR: vettore di residui locali
 %
 
-b=problem_data.b;   % Leggo i dati
-m=problem_data.m;
-f=problem_data.f;
-u0=problem_data.u0;
-uL=problem_data.uL;
+b=probdata.b;   % Leggo i dati
+m=probdata.m;
+f=probdata.f;
+u0=probdata.u0;
+uL=probdata.uL;
 Xi=space.knots;
 H=diff(Xi); % calcolo le ampiezz degli intervalli delimitati dai nodi
 N=numel(H);
@@ -26,7 +26,7 @@ etaR=zeros(1,N); % inizializzo
 
 % Costruisco la funzione da integrare una volta per tutte, poi verrà
 % integrata sugli internodi come da trattazione teorica.
-bd=[problem_data.u0, zeros(1, space.dim-2), problem_data.uL];
+bd=[probdata.u0, zeros(1, space.dim-2), probdata.uL];
 % Questi sono i coefficienti del rilevamento dei dati al bordo nello
 % spazio space.
 % La soluzione invece è da considerarsi omogenea, pertanto:
