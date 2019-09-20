@@ -3,16 +3,17 @@ classdef HBspline_space
     properties
         deg         % grado delle Bspline
         dim         % dimensione dello spazio gerarchico
-        knots       % nodi della griglia gerarchica
+        hknots      % indici dei attivi nodi della griglia gerarchica
+        hcells      % indici delle celle attive della griglia gerarchica
         nlev        % numero di livelli
-        A           % cell array con gli indici logici delle funzioni attive per ogni livello
-        D           % cell array con gli indici logici delle funzioni non attive per ogni livello
-        sp_lev      % cell array di Bspline_space contenente le informazioni di ogni livello dello spazio gerarchico
+        A           % indici delle funzioni attive per ogni livello
+        D           % indici delle funzioni non attive per ogni livello
+        sp_lev      % informazioni di ogni livello dello spazio gerarchico
     end
     
     methods
-
-        function hspace=HBspline_space(space,deg,dim,knots,A,D,nlev,sp_lev)
+        
+        function hspace=HBspline_space(space,deg,dim,hknots,hcells,A,D,nlev,sp_lev)
             % Costruttore della classe HBspline_space. Possiamo costruire
             % la classe fornendo tutti i dati, oppure basare il nuovo
             % spazio gerarchico su un Bspline_space iniziale.
@@ -71,26 +72,41 @@ classdef HBspline_space
             %       memoria molto più ridotto.
             %
             
+            %% Costruzione dello spazio gerarchico a partire da uno spazio 
             if nargin==1
                 % Nel caso venga dato in input un Bspline_space, il
-                % costruttore rea un nuovo spazio gerarchico usando lo
+                % costruttore crea un nuovo spazio gerarchico usando lo
                 % spazio dato come primo livello.
-                hspace.deg=space.deg;  % lo spazio gerarchico ha lo stesso grado dello spazio iniziale
-                hspace.nlev=1; % il numero di livelli iniziale è 1
-                hspace.sp_lev{1}=space;    % il primo livello è lo spazio inizale
-                hspace.dim=space.dim;  % la dimensione coicnide con la dimensione dello spazio iniziale
-                hspace.knots=space.knots;  % la grigllia non è ancora gerarchica
-                hspace.A{1}=[true(1,space.dim)];  % tutte le funzioni sono attive all'inizio
-                hspace.D{1}=~hspace.A{1};   % e nessuna funzione è disattivata
-            else
-                hspace.deg=deg;
-                hspace.dim=dim;
-                hspace.knots=knots;
-                hspace.A=A;
-                hspace.D=D;
-                hspace.nlev=nlev;
-                hspace.sp_lev=sp_lev;
+                
+                % Molte propreità coincidono con quelle di space
+                hspace.deg=space.deg;
+                hspace.dim=space.dim; 
+                
+                % Space forma il primo livello
+                hspace.nlev=1; 
+                hspace.sp_lev{1}=space; 
+                
+                % Tutti i nodi e tutte le celle sono attivi
+                hspace.hknots=true(size(space.knots));
+                hspace.hcells=true(1,numel(space.knots)-1);
+                
+                % Tutte le B-spline sono attive al primo livello
+                hspace.A{1}=[true(1,space.dim)]; 
+                hspace.D{1}=~hspace.A{1}; 
+                
+                return
             end
+            
+            %% Costruzione dello spazio gerarchico dal nulla
+            hspace.deg=deg;
+            hspace.dim=dim;
+            hspace.hknots=hknots;
+            hspace.hcells=hcells;
+            hspace.A=A;
+            hspace.D=D;
+            hspace.nlev=nlev;
+            hspace.sp_lev=sp_lev;
+            
         end
         
     end
