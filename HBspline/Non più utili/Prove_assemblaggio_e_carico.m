@@ -70,7 +70,7 @@ probdata=problem_data_set(Omega, b, m, u0, u1, f, uex);
 %% Costruzione dello spazio di prima approssimazione 
 deg=2;
 
-dofs=100;
+dofs=8;
 
 dim=dofs+2; % dimensione dello spazio di approssimazione 
 Xi=linspace(probdata.Omega(1), probdata.Omega(2), dim-deg+1); % nodi uniformi
@@ -113,7 +113,7 @@ ylim([0,1])
 %% Aggiunta livello 
 % hspace=HBspline_space(space);
 % hspace=hspace.refine([hspace.sp_lev{hspace.nlev}.dim-3]);
-hspace=hspace.refine([3]);
+hspace=hspace.refine([5]);
 % hspace=hspace.refine([12:18]);
 
 
