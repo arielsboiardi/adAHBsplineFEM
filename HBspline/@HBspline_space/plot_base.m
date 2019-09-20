@@ -22,8 +22,9 @@ function plot_base(hspace, varargin)
 %   generatore ho scelto Combined Multiple Recursive perché genera una
 %   successione a mio parere più piacevole enaturale. 
 
-t=hspace.knots(1):0.001:hspace.knots(end);
-
+knots=hspace.sp_lev{1}.knots;
+x0=knots(1); xN=knots(end);
+t=x0:0.001:xN;
 
 % figure
 hold on
