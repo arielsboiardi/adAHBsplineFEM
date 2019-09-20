@@ -13,16 +13,16 @@ function supp_funs=get_supported_functions(space, fun_ind)
 %
 % OUTPUTS:
 %
-%   supp_funs:  indici delle funzioni supportate sugli oggetti dati in
-%               input. Gli indici saranno restituiti nella stessa forma in
-%               cui sono stati forniti dall'utente.
+%   supp_funs:  indici delle B-spline con supporto in comune con le B-pline
+%               indicate da fun_ind.
 %
 % NOTE:
 %   
 %   1. In questo caso siccome l'operazione non può essere parallelizzata ma
 %   necessita di essere svolta una funzione per volta, uso gli indici
 %   sequenziali. Nel caso vengano forniti indici logici li converto, in
-%   modo da aumentare l'interoperabilità con le altre functions.
+%   modo da aumentare l'interoperabilità con altri codici. Restituisco
+%   indici dello stesso tipo di quello dati in input per lo stesso motivo. 
 
 logical_index=false;
 if islogical(fun_ind)
