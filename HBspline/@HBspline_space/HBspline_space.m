@@ -3,7 +3,7 @@ classdef HBspline_space
     properties
         deg         % grado delle Bspline
         dim         % dimensione dello spazio gerarchico
-        knots       % nodi della griglia gerarchica
+        knots       % cell array per i nodi della griglia gerarchica
         nlev        % numero di livelli
         A           % cell array con gli indici logici delle funzioni attive per ogni livello
         D           % cell array con gli indici logici delle funzioni non attive per ogni livello
@@ -32,8 +32,8 @@ classdef HBspline_space
             %           gerarchico, essendo lo stesso a tutti i livelli
             %   dim:    dimensione dello spazio gerarchico, ovvero numero
             %           totale di funzioni di base attive a tutti i livelli
-            %   knots:  nodi della grigli gerarchica come definita nella
-            %           trattazione teorica
+            %   knots:  cell array contente i nodi attivi della griglia
+            %           gerarchica per ogni livello
             %   A:      cell array contente per ogni livello gli indici
             %           delle funzioni di base attive come vettotore
             %           lgoico
@@ -60,12 +60,12 @@ classdef HBspline_space
             %       senza uso di funzioni di libreria.
             %       b. Migliore interfacci con alcune function in cui
             %       l'indicizzazione logica è più naturale.
-            %       c. MAggiore volecità nell'esecuzione di alcune
+            %       c. Maggiore volecità nell'esecuzione di alcune
             %       operazioni.
             %       d. La struttura dati proposta in letteratura [e. g. E.
             %       M. Garau, R. Vazquez, Algorithms for the implementation
             %       of adaptive isogeometric mathods using hierarchical
-            %       splines] prevede di salvre un elenco di indici per le
+            %       splines] prevede di salvare un elenco di indici per le
             %       funzioni attive e uno per le funzoni non attive.
             %       L'implementazione che propongo comporta un utilizzo di
             %       memoria molto più ridotto.
@@ -80,7 +80,7 @@ classdef HBspline_space
                 hspace.sp_lev{1}=space;    % il primo livello è lo spazio inizale
                 hspace.dim=space.dim;  % la dimensione coicnide con la dimensione dello spazio iniziale
                 hspace.knots=space.knots;  % la grigllia non è ancora gerarchica
-                hspace.A{1}=[true(1,space.dim)];  % tutte le funzioni sono attive all'inizio
+                hspace.A{1}=true(1,space.dim);  % tutte le funzioni sono attive all'inizio
                 hspace.D{1}=~hspace.A{1};   % e nessuna funzione è disattivata
             else
                 hspace.deg=deg;
