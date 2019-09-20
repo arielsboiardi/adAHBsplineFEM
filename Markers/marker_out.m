@@ -1,6 +1,6 @@
 classdef marker_out
     properties
-        ind     % vettore logico contente 1 per elemtni marcati 
+        ind     % indici logici degli elementi marcati
         numel   % numero di elementi marcati
     end
     
