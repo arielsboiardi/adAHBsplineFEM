@@ -2,23 +2,23 @@ clear all; close all; clc;
 addpath(genpath('..'));
 %% Dati del problema
 
-% Problema trasporto e diffusione
-Omega=[0,1];
-b=100;
-m=1;
-u0=0;
-u1=1;
-f=@(t) 0.*t;
-uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
-
-% % Problema trsposrto-diffusione al contrario
+% % Problema trasporto e diffusione
 % Omega=[0,1];
-% b=-100;
+% b=100;
 % m=1;
-% u0=1;
-% u1=0;
+% u0=0;
+% u1=1;
 % f=@(t) 0.*t;
-% uex=@(x) (exp((b/m)*(1-x))-1)/(exp(b/m)-1);
+% uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
+
+% Problema trsposrto-diffusione al contrario
+Omega=[0,1];
+b=-100;
+m=1;
+u0=1;
+u1=0;
+f=@(t) 0.*t;
+uex=@(x) (exp((-b/m)*(1-x))-1)/(exp(-b/m)-1);
 
 
 % % Problema funzione di Runge
@@ -68,9 +68,9 @@ uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 probdata=problem_data_set(Omega, b, m, u0, u1, f, uex);
 
 %% Costruzione dello spazio di prima approssimazione 
-deg=3;
+deg=2;
 
-dofs=10;
+dofs=100;
 
 dim=dofs+2; % dimensione dello spazio di approssimazione 
 Xi=linspace(probdata.Omega(1), probdata.Omega(2), dim-deg+1); % nodi uniformi
@@ -113,14 +113,14 @@ ylim([0,1])
 %% Aggiunta livello 
 % hspace=HBspline_space(space);
 % hspace=hspace.refine([hspace.sp_lev{hspace.nlev}.dim-3]);
-% hspace=hspace.refine([4]);
-hspace=hspace.refine([12:18]);
+hspace=hspace.refine([3]);
+% hspace=hspace.refine([12:18]);
 
 
-Ah=HBspline_Assembly(hspace,probdata);
-% Fh=HBspline_load(hspace,probdata);
+Ah=HBspline_Assembly_opt(hspace,probdata);
 Fh=HBspline_load_opt(hspace,probdata);
 uh=Ah\Fh;
+
 uh=[probdata.u0; uh; probdata.uL];
 
 uhfn=@(t) hspace.HBspline_appr(uh,t);
