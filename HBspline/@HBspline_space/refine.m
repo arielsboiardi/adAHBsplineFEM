@@ -29,37 +29,42 @@ end
 % quelle marcate.
 marked_fun=hspace.sp_lev{L}.get_supported_functions(marked_fun);
 
+%% Agggiorno livello attuale
 hspace_ref=hspace; % iniziamo dallo spazio dato 
-hspace_ref.D{L}=hspace.D{L} | marked_fun;   % disattivo le funzioni marcate
-hspace_ref.A{L}=hspace.A{L} & ~marked_fun;  % e le tolgo da quelle attive
-%=?=% A questo punto mi pare che A e D abbiano più una funzione di controllo
-%=?=% l'uno dell'altro che non vera utilità in quanto in questa
-%=?=% implementazione sono complementari
+hspace_ref.D{L}=hspace.D{L} | marked_fun; % disattivo le funzioni marcate
+hspace_ref.A{L}=hspace.A{L} & ~marked_fun; % e le tolgo da quelle attive
 
-space1=hspace.sp_lev{L}.DyadRef;
-% Ottengo il nuovo livello come raffinamento diadico mediante il metodo
-% DyadRef del Bspline_space uniforma dle livello attuale
+space1=hspace.sp_lev{L};
+hspace_ref.hcells{L}=hspace.hcells{L} & ~space1.get_cells(marked_fun);
+cells=hspace_ref.hcells{L}; % estraggo per comodità di notazione
+hspace_ref.hknots{L}=[cells, cells(end)] | [cells(1), cells];
 
-L=L+1;
-hspace_ref.nlev=L;  % aggiungo un livello 
-hspace_ref.sp_lev{L}=space1;    % al nuovo livello metto lo spazio uniforma raffinato
+%% Aggiungo livello successivo
+L=L+1; % incremento il numero dei livelli 
+hspace_ref.nlev=L; 
 
-% A questo punto bisogna determinare le funzioni attive e disattive del
-% nuovo livello 
-C=hspace.get_children(marked_fun);
-% Le funzioni attive del livello precedente sono quelle in C, cioè le
-% figlie di quelle disattivate al livello precedente in questa operazione.
-% ATTENZIONE: Non sono le figlie di TUTTE le funzioni non attive al ivello
-% precedente!
-A_l_log=ismember(1:space1.dim,C);
-hspace_ref.A{L}=A_l_log;  
-% Converto però C in vettore logico come previsto dalla definizione della 
-% classe HBspline_space.
-hspace_ref.D{L}=~hspace_ref.A{L};   % le altre sono non attive
+% Il nuovo livello da aggiungere si ottiene come raffinamento diadico
+% uniforme dell'ultimo livello dello spazio gerarchico:
+space1=space1.DyadRef;
+hspace_ref.sp_lev{L}=space1; 
 
+% Le funzioni da attivare al nuovo livello sono le figlie di quelle tolte
+% dal livello precedente:
+C=hspace.get_children(marked_fun); % figlie delle B-splines aggiunte
+% Converto gli indici in indici logici, come previsto dalla definizione
+% della classe HBspline_space
+A_L_log=ismember(1:space1.dim,C); 
+hspace_ref.A{L}=A_L_log;
+% Tutte le funzioni non attive al nuovo livello sono disattive:
+hspace_ref.D{L}=~hspace_ref.A{L}; 
+
+hspace_ref.hcells{L}=space1.get_cells(A_L_log);
+cells=hspace_ref.hcells{L}; % estraggo per comodità di notazione
+hspace_ref.hknots{L}=[cells, cells(end)] | [cells(1), cells];
+
+% La dimensione dello spazio raffinato è la dimensione dello spazio
+% iniziale cui si togglie il numero di funzioni disattivale a livello L e
+% si aggiunge il numero di funzioni attivate al livello L+1:
 hspace_ref.dim=hspace.dim-nnz(marked_fun)+nnz(hspace_ref.A{L});
-
-% Costruisco la griglia gerarchica
-hspace_ref.knots=union(hspace_ref.knots, space1.knots(space1.get_knots(A_l_log)));
 
 end
