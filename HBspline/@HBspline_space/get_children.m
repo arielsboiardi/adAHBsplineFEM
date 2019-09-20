@@ -1,42 +1,36 @@
 function C=get_children(hspace,fun_ind)
-% get_children determina gli indici delle funzioni di base del livello
-% successivo figlie delle funzioni della base del livello attuale
-% identificate dagli indici fun_ind
+% get_children determina gli indici delle B-spline della base di uno spazio
+% ottenuto per raffinamento diadico dell'ultimo livello di hspace che sono
+% figlie delle B-spline fun_ind dell'ultimo livello di hspace.
 %
 %   C=get_children(lev,fun_ind)
 %
 % INPUTS
 %
 %   hspace:     HBspline_space
-%   fun_ind:    indici delle funzioni di base a livello attuuale di cui si
-%               vogliono calcolare le figlie
+%   fun_ind:    indici delle B-spline dell'ultimo livello di hspace di cui
+%               si vogliono determinare le figlie 
 %
 % OUTPUTS:
 %
-%   C:          indici delle funzioni della base a figlie delle funzioni di
-%               base fun_ind 
+%   C:          indici delle B-spline della base del livello ottenuto per 
+%               raffinamento diadico dell'ultimo livello disponibile 
 %
 % Attenzione:   tutti i livelli sono ottenuti mediante raffinamento
 % diadico, come stabilito dalle regole di raffinamento della classe
-% Bspline_soace e HBspline_space. Le relazione fra i livelli impiegata in
-% questa function è valida esclusivamente in questo caso, motivo per cui si
-% è scelto di includerla come memtodo della classe e non come function
-% autonoma. 
-
-% Questa operazione potrebbe anche essere svolta usando la matrice di
-% connettività, ma siccome ll'operazione non è ovvia proviamo prima a fare
-% tutto più atriginalmente. Nel caso si riuscisse a costruire un metodo con
-% la matrice di connettività questa function potrebbe essere
-% rimpiazzata/riscritta.
+% Bspline_space e HBspline_space. La relazione fra i due livelli si può
+% trovare in K. Hollig, Finite Element Methods with B-Splines, SIAM, 2003. 
+%
+% NOTE:
+%
+%   1. Non c'è un vero motivo per cui questa function sia un metodo di
+%   HBspline_space se non la ocmodità nella notazione.
+%   2. Questa operazione potrebbe anche essere svolta usando la matrice di
+%   connettività, ma l'operazione non è afatto banale. 
+%
 
 p=hspace.deg;       % inizio leggendo il grado per velocità di accesso
-
-% Dalla relazione a due livelli [Hollig: Finite element mathods with
-% B-splines] 
-
-if islogical(fun_ind)
-    % Siccome in molti casi traccio gli elementi marcati in vettori logici
-    % è conveniente incluedere questo caso
+if islogical(fun_ind) % rendo compatibile con indici logici
     fun_ind=find(fun_ind);
 end
 
