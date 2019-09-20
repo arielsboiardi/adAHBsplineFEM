@@ -17,14 +17,9 @@ function sup_knots=get_knots(space,fun_ind)
 %
 %
 % Note:
-%   1. La funzione non è forse necessaria, ma rende più immediato e
-%   controllato l'accesso ai nodi di supporto.
-%   2. Come in molte altre circostanze si è adottata l'indicizzazione
-%   logica. Un spiegazione è data nella descrizione della classe
-%   HBspline_space.
-%   Osserviamo che forse inq uesto caso l'indicizzazione logica rappresenta
-%   una complicazione, ma la manteniamo per una migliore interfaccia con le
-%   altre functions.
+%   Come in molte altre circostanze si è adottata l'indicizzazione logica. 
+%   Un spiegazione è data nella descrizione della classe HBspline_space.
+%
 
 p=space.deg;    % estraggo il grado
 if ~islogical(fun_ind)
@@ -34,15 +29,15 @@ if ~islogical(fun_ind)
 end
 
 fun_ind=[fun_ind,false(1,p+1)];
-% Le B-spline di base arrivano al penultimo nodo interno al dominio (senza
-% contare il padding), per rappresentare con indici logici tutti i nodi
-% serve aggiungere gli indici degli ultimi p+1 nodi.
+% L'ultima B-spline della base ha indice parti all'indice del penultimo
+% indice, senza contare quelli del padding. Devo quindi aggiungere i
+% successivi p+1 indici.
+
 sup_knots=fun_ind;
 for pdx=1:p+1
-    sup_knots=sup_knots | circshift(fun_ind,pdx);
-    % Poiché l'indice di una B-spline coincide con l'indice del primo nodo
-    % che essa tocca (a sx), complessivamente essa il primo nodo e p nodi
-    % avanti, quindi si tratta di aggiungere agli i indici gli indici dei p
-    % nodi successivi. 
+    % L'indice di ogni B-spline coincide con l'indice del primo nodo su cui
+    % essa ha supporto, pertanto i nodi di supporto sono i p+1 nodi
+    % successivi al primo:
+    sup_knots=sup_knots | circshift(fun_ind,pdx); 
 end
 end
