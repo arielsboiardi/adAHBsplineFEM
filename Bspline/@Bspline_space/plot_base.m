@@ -8,4 +8,5 @@ hold on
 for kdx=1:space.dim
     plot(t,space.Bspline_eval(kdx,t))
 end
+hold off
 end
