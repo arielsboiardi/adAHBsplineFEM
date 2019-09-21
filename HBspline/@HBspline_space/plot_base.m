@@ -45,5 +45,5 @@ end
 hold off
 
 P=cellfun(@(V) V(1), P);
-legend(P,leg_info);
+legend(P,leg_info,'AutoUpdate','off');
 end
