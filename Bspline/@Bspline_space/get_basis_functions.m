@@ -1,7 +1,6 @@
 function bfun_ind=get_basis_functions(space,cell_ind)
-% get_basis_functions determina gli indici delle funzioni di base che non
-% si annullano sulle celle della griglia dello spazio space identificate
-% dagli indici cell_ind
+% get_basis_functions determina gli indici delle B-splines di space che non
+% si annullano sulle celle della griglia identificate da cell_ind.
 %
 %   bfun_ind=get_basis_functions(space,cell_ind)
 %
