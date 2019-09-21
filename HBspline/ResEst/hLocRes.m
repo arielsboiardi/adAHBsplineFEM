@@ -56,21 +56,21 @@ for jdx=1:N
         etaR(jdx)=H(jdx)*sqrt(integral(F,Xi(jdx),Xi(jdx+1)));
     end
 end
+etaRc{1}=etaR;
+etaR=etaRc;
 
 if nargin==4
     % Se viene dato come input una gerarchia di residui, aggiungo il vettore
     % appena calcolato come ultimo livello, ammesso che questo sia
     % comaptibile con le dimensioni e la profondità di hspace.
-    if iscell(etaR_prec)
-        if numel(etaR_prec)~=L-1
-            error("Residui non compatibili con lo spazio");
-        end
-        etaR_prec{L}=etaR;
-        etaR=etaR_prec;
-    else
-        etaR_prov{1}=etaR_prec;
-        etaR_prov{2}=etaR;
-        etaR=etaR_prov;
+    if numel(etaR_prec)~=L-1
+        error("Residui non compatibili con lo spazio");
     end
+    % Dall'ultimo residuo disponibile in etaR_prec azzero gli elementi
+    % corrispondenti alla celle disattivate al livello L-1:
+    etaR_prec{L-1}=etaR_prec{L-1}.*hspace.hcells{L-1};
+    
+    etaR_prec{L}=etaR{1};  % salvo etaR come ultimo livello
+    etaR=etaR_prec;
 end
 end
