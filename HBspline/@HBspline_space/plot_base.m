@@ -42,6 +42,7 @@ for L=1:hspace.nlev
         P{L+1}=[];
     end
 end
+hold off
 
 P=cellfun(@(V) V(1), P);
 legend(P,leg_info);
