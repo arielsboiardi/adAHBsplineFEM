@@ -17,6 +17,6 @@ function marked_bsp=HBspline_Marker(hspace, marked_cells)
 L=hspace.nlev; % ultimo livello disponibile dello spazio
 spaceL=hspace.sp_lev{L};
 
-marked_bsp=spaceL.get_basis_functions(marked_cells.ind);
+marked_bsp=spaceL.get_basis_functions(marked_cells.ind) & hspace.A{L};
 
 end
