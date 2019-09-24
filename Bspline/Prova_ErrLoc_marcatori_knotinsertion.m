@@ -3,14 +3,14 @@ clear all; close all; clc
 
 %% Dati del problema
 
-% Problema trasporto e diffusione
-Omega=[0,1];
-b=100;
-m=1;
-u0=0;
-u1=1;
-f=@(t) 0.*t;
-uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
+% % Problema trasporto e diffusione
+% Omega=[0,1];
+% b=100;
+% m=1;
+% u0=0;
+% u1=1;
+% f=@(t) 0.*t;
+% uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 
 % % Problema funzione di Runge
 % Omega=[0,1];
@@ -31,26 +31,26 @@ uex=@(x) (exp((b/m)*x)-1)/(exp(b/m)-1);
 % u0=0;
 % u1=0;
 
-% % Problema con soluzione oscillante
-% Omega=[0,1];
-% 
-% m=1;
-% b=1;
-% 
-% alpha=101;
-% k=15;
-% syms z;
-% uex=(cos(k*z)).^alpha;
-% duex=diff(uex,z);
-% dduex=diff(duex,z);
-% uex=matlabFunction(uex);
-% duex=matlabFunction(duex);
-% dduex=matlabFunction(dduex);
-% 
-% f=@(t) -m*dduex(t)+b*duex(t);
-% 
-% u0=1;
-% u1=-1;
+% Problema con soluzione oscillante
+Omega=[0,pi];
+
+m=1;
+b=1;
+
+alpha=120;
+k=15;
+syms z;
+uex=(cos(k*z)).^alpha;
+duex=diff(uex,z);
+dduex=diff(duex,z);
+uex=matlabFunction(uex);
+duex=matlabFunction(duex);
+dduex=matlabFunction(dduex);
+
+f=@(t) -m*dduex(t)+b*duex(t);
+
+u0=1;
+u1=(-1)^alpha;
 
 % Costruzione del problema 
 probdata=problem_data_set(Omega, b, m, u0, u1, f, uex);
@@ -58,7 +58,7 @@ probdata=problem_data_set(Omega, b, m, u0, u1, f, uex);
 %% Risoluzione 
 deg=3;
 
-dofs=20;
+dofs=81;
 
 dim=dofs+2; % dimensione dello spazio di approssimazione 
 Xi=linspace(probdata.Omega(1), probdata.Omega(2), dim-deg+1); % nodi uniformi
