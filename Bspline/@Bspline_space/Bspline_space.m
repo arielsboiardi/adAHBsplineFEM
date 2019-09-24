@@ -1,4 +1,6 @@
 classdef Bspline_space
+    % Bspline_space contiene le informazioni necessarie per costruire uno
+    % spazio di B-spline.
     
     properties
         deg         % grado delle B-splines
@@ -20,10 +22,6 @@ classdef Bspline_space
             % interni non ripetuti M + deg + 1, pertanto, poiché la
             % partizione estesa contiene M+2+2p nodi,
             space.dim=numel(space.knots)-deg-1;
-            
-            
-            % fucntion in essa contenute.
-            addpath(genpath('.'))
         end 
 
     end
