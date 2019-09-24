@@ -3,8 +3,10 @@ clear all; close all; clc
 %% Dati del problema
 % Problema_bd_layer_dx;
 % Problema_bd_layer_sx;
-Problema_int_layer;
+% Problema_int_layer;
 % Problema_sol_oscillante;
+% Problema_sol_Heaviside_regolarizzata;
+
 
 % Costruzione del problema
 probdata=problem_data_set(Omega, b, m, u0, u1, f, uex);
@@ -21,16 +23,16 @@ hspace=HBspline_space(space);
 
 %% Paramtri di risoluzione
 solver_set=HBspline_solver_set;
-solver_set.maxDoF=400; 
-solver_set.maxIter=12;
-solver_set.minPercImpr=8;
+solver_set.maxDoF=350; 
+solver_set.maxIter=7;
+solver_set.minPercImpr=10;
 solver_set.minIterImpr=1e-4;
 
 solver_set.maxRes=1e-2;
 solver_set.maxResLoc=1;
 
-solver_set.Marker='Dor'; solver_set.theta=0.5;
-solver_set.PreMark=false; solver_set.PreMarkPerc=3;
+solver_set.Marker='Dor'; solver_set.theta=0.25;
+solver_set.PreMark=false; solver_set.PreMarkPerc=7;
 
 solver_set.VerboseMode=true;
 
