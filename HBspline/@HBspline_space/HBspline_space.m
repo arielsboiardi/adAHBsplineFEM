@@ -1,5 +1,7 @@
 classdef HBspline_space
-    % Classe per la descrizione di uno spazio di B-spline gerarchiche
+    % HBspline_space contiene le informazioni per costruire uno spazio di
+    % B-splines gerarchiche.
+    
     properties
         deg         % grado delle Bspline
         dim         % dimensione dello spazio gerarchico
