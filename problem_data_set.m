@@ -23,10 +23,9 @@ classdef problem_data_set
     end
     
     methods
-        % Costruttore della classe
+
         function probdata=problem_data_set(Omega,b,m,u0,uL,f,varargin)
-            % Costruise una variabile di tipo problem_data_set contentente
-            % le informazioni assegnate.
+            % problem_data_set costruisce un'istanza della classe.
             probdata.Omega=Omega;
             probdata.b=b;
             probdata.m=m;
