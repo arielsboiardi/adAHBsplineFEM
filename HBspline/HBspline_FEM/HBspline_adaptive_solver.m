@@ -103,8 +103,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
     hspace=hspace.refine(marked_Bsplines);
 end
 if solver_setting.VerboseMode && hspace.dim-2 > solver_setting.maxDoF 
-    fprintf
-    ('Raggiunto il numero massimo di iterazioni')
+    fprintf('Raggiunto il numero massimo di iterazioni')
 end
 
 % Compilo l'uscita rel risolutore
