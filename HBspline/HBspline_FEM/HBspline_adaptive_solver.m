@@ -38,7 +38,6 @@ function [uh, hspace_sol, solver_out]=HBspline_adaptive_solver(probdata, hspace,
 %
 
 NoIter=0;   % numero iterazioni
-eta_prec=Inf; % CONTROLLA COME FARE MEGLIO
 while hspace.dim-2 <= solver_setting.maxDoF
     NoIter=NoIter+1;
     if NoIter > solver_setting.maxIter
@@ -66,14 +65,18 @@ while hspace.dim-2 <= solver_setting.maxDoF
     % Stima dell'errore globale
     eta=hGlobRes(etaR);     % residuo globale
     
-    IterImpr=abs(eta-eta_prec);
-    if IterImpr < solver_setting.minIterImpr
-        if solver_setting.VerboseMode
-            fprintf(['Il miglioramento ottenuto con l''ultima iterazione è di %f, \n'...
-                'minore alla soglia fissata di %f \n'],...
-                IterImpr, solver_setting.minIterImpr)
+    if NoIter>1
+        % Il miglioramento di iterazione ha senso solo dalla seconda
+        % iterazione in poi
+        IterImpr=abs(eta-eta_prec);
+        if IterImpr < solver_setting.minIterImpr
+            if solver_setting.VerboseMode
+                fprintf(['Il miglioramento ottenuto con l''ultima iterazione è di %f, \n'...
+                    'minore alla soglia fissata di %f \n'],...
+                    IterImpr, solver_setting.minIterImpr)
+            end
+            break
         end
-        break
     end
     eta_prec=eta;
     
@@ -102,7 +105,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
     % Raffinamento
     hspace=hspace.refine(marked_Bsplines);
 end
-if solver_setting.VerboseMode && hspace.dim-2 > solver_setting.maxDoF 
+if solver_setting.VerboseMode && hspace.dim-2 > solver_setting.maxDoF
     fprintf('Raggiunto il numero massimo di iterazioni')
 end
 
