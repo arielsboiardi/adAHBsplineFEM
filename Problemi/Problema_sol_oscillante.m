@@ -5,8 +5,8 @@ Omega=[0,pi];
 m=1;
 b=1;
 
-alpha=121;
-k=15;
+alpha=221;
+k=5;
 syms z;
 uex=(cos(k*z)).^alpha;
 duex=diff(uex,z);

@@ -4,11 +4,11 @@ Omega=[-1,1];
 m=1;
 b=1;
 
-k=100; % Paramtro cche determina la ripidità della soluzione in 0
+k=90; % Paramtro cche determina la ripidità della soluzione in 0
 
 % Costruisco la soluzione e le sue derivate simboliche
 syms z;
-uex=1./(1+exp(2*k*z));
+uex=1./(1+exp(-2*k*z));
 duex=diff(uex, z);
 dduex=diff(duex, z);
 
@@ -21,4 +21,4 @@ dduex=matlabFunction(dduex);
 f=@(t) -m*dduex(t)+b*duex(t);
 
 u0=uex(Omega(1));
-uL=uex(Omega(2));
+u1=uex(Omega(2));
