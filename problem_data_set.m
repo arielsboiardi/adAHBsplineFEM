@@ -1,4 +1,16 @@
 classdef problem_data_set
+% problem_data_set contiene le informazioni del problema di trasporto e
+% diffusione.
+%   Risolviamo problemi della forma:
+%
+%       -m * u'' + b * u' = f su Omega
+%       u(Omega(1))=u0; u(Omega(2))=uL
+%
+%   Un oggetto di questa classe contiene tutte le informazioni del
+%   problema. I dati comprendono anche, se dipsonibili, la soluzione esatta
+%   del problema e la sua derivata, per valutare l'errore commesso in
+%   problemi banchmark.
+
     properties
         Omega   % vettore 1x2 contentne estremi del dominio
         b       % parametro b del problmea
@@ -9,12 +21,12 @@ classdef problem_data_set
         uex     % soluzione esatta (function handle)
         duex    % derivata della soluzione esatta (function handle)
     end
+    
     methods
-        % Costruttore
+        % Costruttore della classe
         function probdata=problem_data_set(Omega,b,m,u0,uL,f,varargin)
             % Costruise una variabile di tipo problem_data_set contentente
-            % le informazioni assegnate. I due input con la soluzione sono
-            % costruiti come facoltativi, ma sarebbero opportuni.
+            % le informazioni assegnate.
             probdata.Omega=Omega;
             probdata.b=b;
             probdata.m=m;
