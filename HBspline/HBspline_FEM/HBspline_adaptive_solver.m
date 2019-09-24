@@ -111,7 +111,7 @@ solver_out=HBspline_solver_out;
 solver_out.NoIter=NoIter;
 solver_out.NoDoF=hspace_sol.dim-2;
 solver_out.GlobalRes=eta;
-solver_out.LocalRes=etaR{L};
+solver_out.LocalRes=etaR;
 solver_out.LastIterImpr=IterImpr;
 solver_out.Amatrix=Ah;
 
