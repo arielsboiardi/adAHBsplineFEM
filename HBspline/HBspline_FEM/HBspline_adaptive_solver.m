@@ -69,11 +69,11 @@ while hspace.dim-2 <= solver_setting.maxDoF
         % Il miglioramento di iterazione ha senso solo dalla seconda
         % iterazione in poi
         IterImpr=abs(eta-eta_prec);
-        if IterImpr < solver_setting.minIterImpr
+        if IterImpr/eta_prec < solver_setting.minPercIterImpr/100
             if solver_setting.VerboseMode
                 fprintf(['Il miglioramento ottenuto con l''ultima iterazione è di %f, \n'...
-                    'minore alla soglia fissata di %f \n'],...
-                    IterImpr, solver_setting.minIterImpr)
+                    'minore al %d%% della stima totale dell''errore %f.\n'],...
+                    IterImpr, solver_setting.minPercIterImpr, eta)
             end
             break
         end
@@ -87,8 +87,8 @@ while hspace.dim-2 <= solver_setting.maxDoF
     if RelImpr < solver_setting.minPercImpr/100
         if solver_setting.VerboseMode
             fprintf(['Il miglioramento stimato ottenibile con questa gerarchia di raffinamenti\n',...
-                'è di %f, minore del %d%% della stima totale dell''errore.\n'],...
-                RelImpr, solver_setting.minPercImpr)
+                'è di %f, minore del %d%% della stima totale dell''errore %f.\n'],...
+                RelImpr, solver_setting.minPercImpr,eta)
         end
         break
     end
