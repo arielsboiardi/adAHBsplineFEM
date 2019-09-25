@@ -28,8 +28,8 @@ t=x0:0.001:xN;
 
 % figure
 hold on
-P{1}=[];
 for L=1:hspace.nlev
+    P{L}=[];
     spaceL=hspace.sp_lev{L};
     rng(L,'combRecursive');
     clrL=rand(1,3);
@@ -39,7 +39,6 @@ for L=1:hspace.nlev
     end
     if isempty(P{L})
         P{L}=plot(1,1,'LineStyle','none');
-        P{L+1}=[];
     end
 end
 hold off
