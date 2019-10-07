@@ -1,4 +1,4 @@
-function  [marked, etaR_rest]=ThresMark(etaR, threshold)
+function  [marked, etaR_rest]=ThresMark(etaR, gamma)
 % ThresMark marca tutti gli elementi che hanno residuo locale maggiore 
 % della soglia threshold.
 %
@@ -16,8 +16,9 @@ function  [marked, etaR_rest]=ThresMark(etaR, threshold)
 %       azzerati
 %
 
+eta=norm(etaR,2); % Global error estimate
 etaR_rest=etaR;
-indcs=etaR>threshold;
+indcs=etaR/eta>gamma;
 marked=marker_out(indcs,nnz(indcs)); 
 etaR_rest(indcs)=0;
 

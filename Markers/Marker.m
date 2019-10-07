@@ -20,7 +20,7 @@ marked=marker_out(zeros(size(etaR)),0);
 if setting.thres_mark
     % Se le impostazioni del marcatore lo prevede effettuo la marcatura a
     % soglia e aggiungo gli elementi marcati alla variabile marked.
-    [marked1, etaR]=ThresMark(etaR,setting.thres);
+    [marked1, etaR]=ThresMark(etaR,setting.gamma);
     marked.ind=logical(marked.ind+marked1.ind);
     marked.numel=marked.numel+marked1.numel;
 end
