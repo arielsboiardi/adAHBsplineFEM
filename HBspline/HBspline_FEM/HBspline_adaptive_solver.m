@@ -1,6 +1,6 @@
 function [uh, hspace_sol, solver_out]=HBspline_adaptive_solver(probdata, hspace, solver_setting)
 % HBspline_adaptive_solver determina la soluzione approssimata del problema
-% probdata in uno psazio di B-spline gerarchiche costruito adattivamente
+% probdata in uno spazio di B-spline gerarchiche costruito adattivamente
 % per migliorare l'approssimazione del problema dato.
 %
 %   [uh, hspace_sol, solver_out]=HBspline_adaptive_solver(probdata, hspace, solver_setting)

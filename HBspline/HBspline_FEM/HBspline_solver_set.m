@@ -9,7 +9,7 @@ classdef HBspline_solver_set
         minPercIterImpr % Minimo valore del miglioramento in una iterazione per cui si stima abbia senso prosegure.
         
         maxRes          % Massimo valore accettabile per lo stimatore residuale dell'errore globale.
-        maxResLoc       % Massimo valore accettabile per lo stimatore residuale dell'errore locale.
+        maxRelResLoc    % Maximum relative local error estimate in every level.
         
         Marker          % Selezione del marcatore.
         theta           % Valore del parametro theta del marcatore selezionato.
