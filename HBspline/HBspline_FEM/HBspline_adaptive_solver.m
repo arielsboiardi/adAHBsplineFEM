@@ -84,7 +84,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
     
     % Criterio di stop sul residuo locale
     RelImpr=eta_L/eta;
-    if RelImpr < solver_setting.minPercImpr/100
+    if RelImpr*100 < solver_setting.minPercImpr
         if solver_setting.VerboseMode
             fprintf(['Il miglioramento stimato ottenibile con questa gerarchia di raffinamenti\n',...
                 'è di %f, minore del %d%% della stima totale dell''errore %f.\n'],...
