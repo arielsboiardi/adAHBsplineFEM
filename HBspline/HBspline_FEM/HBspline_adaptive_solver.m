@@ -96,7 +96,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
     % Marcatura
     markersetting=marker_set(solver_setting.Marker,solver_setting.theta,...
         solver_setting.PreMark,solver_setting.PreMarkPerc,...
-        true,solver_setting.maxResLoc);
+        true,solver_setting.maxRelResLoc);
     marked_cells=Marker(etaR{L},markersetting);
     
     % Passo la marcatura sulle B-splines
