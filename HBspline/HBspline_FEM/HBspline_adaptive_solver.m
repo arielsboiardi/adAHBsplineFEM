@@ -78,7 +78,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
             break
         end
     end
-    eta_prec=eta;
+    eta_prec=eta; % Save global error estimate at current iteration
     
     eta_L=norm(etaR{L},2);  % residuo sull'ultimo livello
     
