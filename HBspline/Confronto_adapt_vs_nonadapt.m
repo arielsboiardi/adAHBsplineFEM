@@ -1,8 +1,10 @@
 clear all; close all; clc
+cd 'C:\Users\ariel\OneDrive - Università degli Studi di Parma\Matematica numerica\Esame\MATLAB'
+addpath(genpath('.'))
 
 %% Dati del problema
 % Problema_bd_layer_dx;
-% Problema_bd_layer_sx;
+Problema_bd_layer_sx;
 % Problema_int_layer;
 % Problema_sol_oscillante;
 % Problema_sol_Heaviside_regolarizzata;
@@ -24,15 +26,15 @@ hspace=HBspline_space(space);
 %% Paramtri di risoluzione
 solver_set=HBspline_solver_set;
 solver_set.maxDoF=350; 
-solver_set.maxIter=7;
+solver_set.maxIter=6;
 solver_set.minPercImpr=10;
-solver_set.minIterImpr=1e-4;
+solver_set.minPercIterImpr=3;
 
 solver_set.maxRes=1e-2;
-solver_set.maxResLoc=1;
+solver_set.maxRelResLoc=0.1;
 
-solver_set.Marker='Dor'; solver_set.theta=0.25;
-solver_set.PreMark=false; solver_set.PreMarkPerc=7;
+solver_set.Marker='Dor'; solver_set.theta=0.5;
+solver_set.PreMark=false; solver_set.PreMarkPerc=5;
 
 solver_set.VerboseMode=true;
 
@@ -54,7 +56,7 @@ ylim([0,1])
 
 % Errore 
 AdaptErr=L2error(uhfn, probdata.uex, probdata.Omega);
-fprintf('Procedura adattiva con %d DoF, errore L^2 %f\n', solver_out.NoDoF, AdaptErr);
+fprintf('Procedura adattiva con %d DoF in %d iterazioni, errore L^2 %f\n', solver_out.NoDoF,solver_out.NoIter, AdaptErr);
 
 %% Risolutore non adattivo
 dofs=solver_out.NoDoF;
@@ -69,3 +71,4 @@ NonAdaptErr=L2error(uhfn,probdata.uex,probdata.Omega);
 fprintf('Procedura non adattiva con %d DoF, errore L^2 %f\n', solver_out.NoDoF, NonAdaptErr);
 
 
+rmpath(genpath('.'))
