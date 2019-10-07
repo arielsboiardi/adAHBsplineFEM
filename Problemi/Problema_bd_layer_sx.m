@@ -1,6 +1,6 @@
 % Problema trsposrto-diffusione al contrario
 Omega=[0,1];
-b=-10;
+b=-500;
 m=1;
 u0=1;
 u1=0;
