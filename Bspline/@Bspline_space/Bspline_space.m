@@ -18,7 +18,7 @@ classdef Bspline_space
             % INPUTS:
             %  
             %   deg:    degree of the B-splines
-            %   knots:  non-extended knot vector
+            %   knots:  non-extended knot vector (see report)
             %
             % OUTPUTS:
             %
