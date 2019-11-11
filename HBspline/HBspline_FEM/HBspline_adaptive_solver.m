@@ -54,13 +54,8 @@ while hspace.dim-2 <= solver_setting.maxDoF
     
     % Calcolo del residuo
     L=hspace.nlev;
-    if L==1
-        % Al primo giro etaR è da creare
-        etaR=hLocRes(uh,probdata, hspace);
-    else
-        % ... poi da aggiornare
-        etaR=hLocRes(uh,probdata, hspace, etaR);
-    end
+    
+    etaR=hLocRes(uh,probdata, hspace);
     
     % Stima dell'errore globale
     eta=hGlobRes(etaR);     % residuo globale
@@ -106,7 +101,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
     hspace=hspace.refine(marked_Bsplines);
 end
 if solver_setting.VerboseMode && hspace.dim-2 > solver_setting.maxDoF
-    fprintf('Raggiunto il numero massimo di gradi di libertà \n')
+    fprintf('Maximum number of DoF reached. \n')
 end
 
 % Compilo l'uscita rel risolutore
