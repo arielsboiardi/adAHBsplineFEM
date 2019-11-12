@@ -1,5 +1,5 @@
 function sup_cells=get_cells(space,fun_ind)
-% get_knots determina gli indici delle celle che supportano la funzione di
+% get_cells determina gli indici delle celle che supportano la funzione di
 % indice fun_ind dello spazio space.
 %
 %   supp_cells = get_knots(space,fun_ind)
