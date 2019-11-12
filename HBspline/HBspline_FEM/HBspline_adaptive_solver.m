@@ -63,12 +63,12 @@ while hspace.dim-2 <= solver_setting.maxDoF
     if NoIter>1
         % Il miglioramento di iterazione ha senso solo dalla seconda
         % iterazione in poi
-        IterImpr=abs(eta-eta_prec);
-        if (IterImpr/eta_prec)*100 < solver_setting.minPercIterImpr
+        IterRelImprPerc=(abs(eta-eta_prec)/eta_prec)*100;
+        if IterRelImprPerc < solver_setting.minPercIterImpr
             if solver_setting.VerboseMode
                 fprintf(['Il miglioramento ottenuto con l''ultima iterazione è di %f, \n'...
                     'minore al %d%% della stima totale dell''errore %f.\n'],...
-                    IterImpr, solver_setting.minPercIterImpr, eta)
+                    IterRelImprPerc, solver_setting.minPercIterImpr, eta)
             end
             break
         end
@@ -78,12 +78,12 @@ while hspace.dim-2 <= solver_setting.maxDoF
     eta_L=norm(etaR{L},2);  % residuo sull'ultimo livello
     
     % Criterio di stop sul residuo locale
-    RelImpr=eta_L/eta;
-    if RelImpr*100 < solver_setting.minPercImpr
+    RelImprPerc=(eta_L/eta)*100;
+    if RelImprPerc < solver_setting.minPercImpr
         if solver_setting.VerboseMode
             fprintf(['Il miglioramento stimato ottenibile con questa gerarchia di raffinamenti\n',...
                 'è di %f, minore del %d%% della stima totale dell''errore %f.\n'],...
-                RelImpr, solver_setting.minPercImpr,eta)
+                RelImprPerc, solver_setting.minPercImpr,eta)
         end
         break
     end
@@ -110,7 +110,7 @@ solver_out.NoIter=NoIter;
 solver_out.NoDoF=hspace_sol.dim-2;
 solver_out.GlobalRes=eta;
 solver_out.LocalRes=etaR;
-solver_out.LastIterImpr=IterImpr;
+solver_out.LastIterImpr=IterRelImprPerc/100;
 solver_out.Amatrix=Ah;
 
 end
