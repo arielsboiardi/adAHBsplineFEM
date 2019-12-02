@@ -16,6 +16,7 @@ classdef HBspline_solver_set
         PreMark         % Attivazione del premarker.
         PreMarkPerc     % Percetuale di premarking
        
+        FastLocRes      % Modalità di calcolo del residuo
         VerboseMode     % Attivazione della modalità verbosa che commenta i risultati intermedi nella finestra dei comandi. 
     end
     
