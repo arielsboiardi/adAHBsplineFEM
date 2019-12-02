@@ -37,6 +37,8 @@ function [uh, hspace_sol, solver_out]=HBspline_adaptive_solver(probdata, hspace,
 %       l'approssimazione ottenuta.
 %
 
+time=cputime;
+
 NoIter=0;   % numero iterazioni
 while hspace.dim-2 <= solver_setting.maxDoF
     NoIter=NoIter+1;
@@ -55,8 +57,15 @@ while hspace.dim-2 <= solver_setting.maxDoF
     % Calcolo del residuo
     L=hspace.nlev;
     
-    etaR=hLocRes(uh,probdata, hspace);
-    
+    if solver_setting.FastLocRes
+        if L==1
+            etaR=hLocResFast(uh,probdata, hspace);
+        else
+            etaR=hLocResFast(uh,probdata, hspace, etaR);
+        end
+    else
+        etaR=hLocRes(uh, probdata, hspace);
+    end
     % Stima dell'errore globale
     eta=hGlobRes(etaR);     % residuo globale
     
@@ -68,7 +77,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
             if solver_setting.VerboseMode
                 fprintf(['Il miglioramento ottenuto con l''ultima iterazione è di %f, \n'...
                     'minore al %d%% della stima totale dell''errore %f.\n'],...
-                    IterRelImprPerc, solver_setting.minPercIterImpr, eta)
+                    IterRelImprPerc/100, solver_setting.minPercIterImpr, eta)
             end
             break
         end
@@ -83,7 +92,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
         if solver_setting.VerboseMode
             fprintf(['Il miglioramento stimato ottenibile con questa gerarchia di raffinamenti\n',...
                 'è di %f, minore del %d%% della stima totale dell''errore %f.\n'],...
-                RelImprPerc, solver_setting.minPercImpr,eta)
+                RelImprPerc/100, solver_setting.minPercImpr,eta)
         end
         break
     end
@@ -100,9 +109,13 @@ while hspace.dim-2 <= solver_setting.maxDoF
     % Raffinamento
     hspace=hspace.refine(marked_Bsplines);
 end
-if solver_setting.VerboseMode && hspace.dim-2 > solver_setting.maxDoF
-    fprintf('Maximum number of DoF reached. \n')
+if solver_setting.VerboseMode 
+    if hspace.dim-2 > solver_setting.maxDoF
+        fprintf('Maximum number of DoF reached. \n')
+    end
+    fprintf('Adaptive procedure required %f seconds. \n',cputime-time)
 end
+
 
 % Compilo l'uscita rel risolutore
 solver_out=HBspline_solver_out;
