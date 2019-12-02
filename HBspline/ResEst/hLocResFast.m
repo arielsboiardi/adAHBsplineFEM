@@ -1,10 +1,10 @@
-function etaR=hLocRes(uh,probdata, hspace, etaR_prec)
-% hLocRes calcola il residuo locale dell'approssimazione uh del problema
+function etaR=hLocResFast(uh,probdata, hspace, etaR_prec)
+% hLocResFast calcola il residuo locale dell'approssimazione uh del problema
 % probdata al livello più profondo dello spazio gerarhcico hspace. Se viene
 % dato etaR_prec, cell array contente il reisudo fino al penultimo livello,
 % aggiunge un livello con il residuo appena calcolato.
 %
-%   etaR_L=hLocRes(uh,probdata, hspace, etaR_prec)
+%   etaR_L=hLocResFast(uh,probdata, hspace, etaR_prec)
 %
 % INPUTS:
 %
