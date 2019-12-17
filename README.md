@@ -1,5 +1,9 @@
 # adAHBsplineFEM
 
-Adaptive hierarchical B-spline solution for steady advection-diffusion problem,
+Adaptive hierarchical B-spline solution for steady advection-diffusion problem.
 
 ![](figures/ad_evolution_base.gif)
+
+This MATLAB library contains implementations of adaptive FEM with hierarchical B-spline basis functions for the numerical solution of the one-dimensiona, steady-state advection-diffusion equation that I developed as a final project for the couse of Matematica Numerica at University of Parma. 
+
+The theortical explaination is contained in the report. Comments in most of the codes are still in italian. 
