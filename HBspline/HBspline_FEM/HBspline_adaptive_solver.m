@@ -58,7 +58,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
     L=hspace.nlev;
     
     if solver_setting.FastLocRes
-        if L==1
+        if NoIter==1
             etaR=hLocResFast(uh,probdata, hspace);
         else
             etaR=hLocResFast(uh,probdata, hspace, etaR);
@@ -109,7 +109,7 @@ while hspace.dim-2 <= solver_setting.maxDoF
     % Raffinamento
     hspace=hspace.refine(marked_Bsplines);
 end
-if solver_setting.VerboseMode 
+if solver_setting.VerboseMode
     if hspace.dim-2 > solver_setting.maxDoF
         fprintf('Maximum number of DoF reached. \n')
     end
@@ -123,7 +123,9 @@ solver_out.NoIter=NoIter;
 solver_out.NoDoF=hspace_sol.dim-2;
 solver_out.GlobalRes=eta;
 solver_out.LocalRes=etaR;
-solver_out.LastIterImpr=IterRelImprPerc/100;
+if NoIter>1
+    solver_out.LastIterImpr=IterRelImprPerc/100;
+end
 solver_out.Amatrix=Ah;
 
 end
