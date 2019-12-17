@@ -33,7 +33,7 @@ for L=1:hspace.nlev
     spaceL=hspace.sp_lev{L};
     rng(L,'combRecursive');
     clrL=rand(1,3);
-    leg_info{L}=strcat("Livello", num2str(L));
+    leg_info{L}=strcat("Level ", num2str(L));
     for jdx=find(hspace.A{L})
         P{L}=plot(t,spaceL.Bspline_eval(jdx,t),'Color',clrL);
     end
@@ -44,5 +44,5 @@ end
 hold off
 
 P=cellfun(@(V) V(1), P);
-legend(P,leg_info,'AutoUpdate','off');
+legend(P,leg_info,'AutoUpdate','off', 'interpreter','latex');
 end
