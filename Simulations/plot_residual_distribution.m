@@ -6,7 +6,7 @@
 uex=probdata.uex;
 
 err_pt=@(x) abs(uhfn(x)-uex(x));
-semilogy(t,err_pt(t))
+plot(t,err_pt(t))
 hold on 
 
 %% Residuals
@@ -17,5 +17,6 @@ h=diff(Xi);
 mid_knots=Xi(1:end-1)+h/2;
 
 plot(mid_knots,etaR, 'kdiamond');
+set(gca,'YScale','log')
 
-legend('Error $e_h$','Local residual $\eta_{Q}$','interpreter','latex')
+legend('Pointwise error','Local residual','interpreter','latex')
