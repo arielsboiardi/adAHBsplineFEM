@@ -5,7 +5,7 @@ Omega=[0,pi];
 m=1;
 b=1;
 
-alpha=221;
+alpha=101;
 k=5;
 syms z;
 uex=(cos(k*z)).^alpha;

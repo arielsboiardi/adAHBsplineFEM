@@ -3,7 +3,7 @@ Omega=[0,1];
 
 m=1;
 b=1;
-alpha=1000000;
+alpha=1e5;
 
 syms z;
 uex=1/(1+alpha*(z-1/2).^2)-1/(1+alpha/4);

@@ -1,6 +1,6 @@
 % Problema trasporto e diffusione
 Omega=[0,1];
-b=500;
+b=10;
 m=1;
 u0=0;
 u1=1;

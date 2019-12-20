@@ -4,7 +4,7 @@ Omega=[-1,1];
 m=1;
 b=1;
 
-k=81; % Paramtro cche determina la ripidità della soluzione in 0
+k=91; % Paramtro cche determina la ripidità della soluzione in 0
 
 % Costruisco la soluzione e le sue derivate simboliche
 syms z;
