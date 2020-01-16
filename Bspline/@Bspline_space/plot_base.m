@@ -3,7 +3,7 @@ function plot_base(space)
 % impostazioni grafiche come plot di libreria.
 
 t=linspace(space.knots(1),space.knots(end),100*numel(space.knots));
-figure
+% figure
 hold on
 for kdx=1:space.dim
     plot(t,space.Bspline_eval(kdx,t))
