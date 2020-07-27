@@ -1,7 +1,7 @@
 function u=HBspline_appr(hspace, uh, t, der_order)
 % HBspline_appr calcola in t la funzione u che si scrive con coordinate uh
 % rispetto alla base dello spazio gerarchico hspace. Se dato der_order
-% viene valutata la derivata di orgine 1 o 2.
+% viene valutata la derivata di ordine 1 o 2.
 %
 %   u=HBspline_appr(hspace, uh, t, der_order)
 %
